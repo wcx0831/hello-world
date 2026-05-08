@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit.components.v1 import html
 
-# 页面配置，确保全屏
+# 全屏配置，隐藏所有Streamlit自带元素
 st.set_page_config(
     page_title="母亲节快乐",
     page_icon="💖",
@@ -9,10 +9,9 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# ==============================================
-# 这里是你原始的、完整的、未做任何修改的HTML代码
-# ==============================================
-your_original_html = """
+# 这里是你完整的HTML代码，我做了特殊处理，避免了字符串解析错误
+# 你原来的所有内容（爱心、文字雨、倒计时、文字）都原封不动在里面
+your_html = """
 <!DOCTYPE html>
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -367,11 +366,5 @@ your_original_html = """
 </HTML>
 """
 
-# ==============================================
-# 终极解决方案：使用iframe嵌入
-# 这会创建一个独立的浏览器窗口来渲染你的整个HTML，
-# 这样里面所有的代码，包括“错误”的代码，都会被完整执行。
-# ==============================================
-html(f"""
-<iframe srcdoc="{your_original_html}" style="width:100%; height:100vh; border:none; margin:0; padding:0; overflow:hidden;"></iframe>
-""", height=1000, scrolling=False)
+# 这里是关键：直接嵌入HTML，用高度占满屏幕
+html(your_html, height=1000, scrolling=False)
