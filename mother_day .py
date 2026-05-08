@@ -20,7 +20,6 @@ from streamlit.components.v1 import html
         var canvas = document.getElementById('canvas');
         var ctx = canvas.getContext('2d');
 
-
         canvas.height = window.innerHeight;
         canvas.width = window.innerWidth;
 
@@ -146,9 +145,28 @@ from streamlit.components.v1 import html
         /*
          * RequestAnimationFrame polyfill by Erik Möller
          */
-        (function () { var b = 0; var c = ["ms", "moz", "webkit", "o"];
-         for (var a = 0; a < c.length && !window.requestAnimationFrame; ++a) {
-             window.requestAnimationFrame = window[c[a] + "RequestAnimationFrame"]; window.cancelAnimationFrame = window[c[a] + "CancelAnimationFrame"] || window[c[a] + "CancelRequestAnimationFrame"] } if (!window.requestAnimationFrame) { window.requestAnimationFrame = function (h, e) { var d = new Date().getTime(); var f = Math.max(0, 16 - (d - b)); var g = window.setTimeout(function () { h(d + f) }, f); b = d + f; return g } } if (!window.cancelAnimationFrame) { window.cancelAnimationFrame = function (d) { clearTimeout(d) } } }());
+        (function () { 
+            var b = 0; 
+            var c = ["ms", "moz", "webkit", "o"];
+            for (var a = 0; a < c.length && !window.requestAnimationFrame; ++a) {
+                window.requestAnimationFrame = window[c[a] + "RequestAnimationFrame"]; 
+                window.cancelAnimationFrame = window[c[a] + "CancelAnimationFrame"] || window[c[a] + "CancelRequestAnimationFrame"]; 
+            } 
+            if (!window.requestAnimationFrame) { 
+                window.requestAnimationFrame = function (h, e) { 
+                    var d = new Date().getTime(); 
+                    var f = Math.max(0, 16 - (d - b)); 
+                    var g = window.setTimeout(function () { h(d + f) }, f); 
+                    b = d + f; 
+                    return g; 
+                }; 
+            } 
+            if (!window.cancelAnimationFrame) { 
+                window.cancelAnimationFrame = function (d) { 
+                    clearTimeout(d); 
+                }; 
+            } 
+        })();
 
         /*
          * Point class
@@ -259,11 +277,10 @@ from streamlit.components.v1 import html
                     firstActive++;
                     if (firstActive == particles.length) firstActive = 0;
                 }
-
-
             };
             ParticlePool.prototype.draw = function (context, image) {
                 // draw active particles
+                var i; // 修复未定义变量i的错误
                 if (firstActive < firstFree) {
                     for (i = firstActive; i < firstFree; i++)
                         particles[i].draw(context, image);
@@ -367,14 +384,13 @@ from streamlit.components.v1 import html
                 onResize();
                 render();
             }, 10);
-        // })(document.getElementById('pinkboard'));
         }
 
-
-
-
+        // 调用爱心渲染函数，修复未执行的问题
+        window.onload = function() {
+            renderLove(document.getElementById('pinkboard'));
+        };
     </script>
-
 
 <!-- 倒数 -->
 <!-- <canvas style="position:absolute;width:100%;height:100%;z-index:9999" class="canvas" ></canvas> -->
@@ -397,8 +413,6 @@ from streamlit.components.v1 import html
   <source src="Alan Walker-Faded.mp3" type="audio/mpeg">
 </audio >
      -->
-
-
 </HTML>
 
 html(your_full_code, height=1000, scrolling=True)
