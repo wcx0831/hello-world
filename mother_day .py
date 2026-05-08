@@ -1,157 +1,82 @@
-{
- "cells": [
-  {
-   "cell_type": "code",
-   "execution_count": 1,
-   "id": "81ff49e2-0ae1-4664-9f69-ee62eccb123b",
-   "metadata": {},
-   "outputs": [
-    {
-     "name": "stderr",
-     "output_type": "stream",
-     "text": [
-      "2026-05-08 14:52:55.737 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-      "2026-05-08 14:52:55.738 WARNING streamlit.runtime.scriptrunner_utils.script_run_context: Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-      "2026-05-08 14:52:56.455 \n",
-      "  \u001b[33m\u001b[1mWarning:\u001b[0m to view this Streamlit app on a browser, run it with the following\n",
-      "  command:\n",
-      "\n",
-      "    streamlit run C:\\Users\\wcx13\\anaconda3\\Lib\\site-packages\\ipykernel_launcher.py [ARGUMENTS]\n",
-      "2026-05-08 14:52:56.456 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-      "2026-05-08 14:52:56.457 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-      "2026-05-08 14:52:56.458 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-      "2026-05-08 14:52:56.459 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-      "2026-05-08 14:52:56.461 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-      "2026-05-08 14:52:56.462 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-      "2026-05-08 14:52:56.466 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-      "2026-05-08 14:52:56.476 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-      "2026-05-08 14:52:56.479 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-      "2026-05-08 14:52:56.481 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-      "2026-05-08 14:52:56.482 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-      "2026-05-08 14:52:56.487 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-      "2026-05-08 14:52:56.488 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-      "2026-05-08 14:52:56.488 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-      "2026-05-08 14:52:57.691 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-      "2026-05-08 14:52:57.693 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n",
-      "2026-05-08 14:52:57.696 Thread 'MainThread': missing ScriptRunContext! This warning can be ignored when running in bare mode.\n"
-     ]
+import streamlit as st
+import time
+
+# -------------------------- 页面基础配置 --------------------------
+st.set_page_config(
+    page_title="母亲节快乐贺卡",
+    page_icon="💐",
+    layout="centered"
+)
+
+# -------------------------- 粉色主题背景与样式 --------------------------
+page_style = """
+<style>
+    [data-testid="stAppViewContainer"] {
+        background: linear-gradient(135deg, #ffd6e0, #ffb6c1, #ffe4ec);
+        background-size: 400% 400%;
+        animation: gradientBg 12s ease infinite;
     }
-   ],
-   "source": [
-    "import streamlit as st\n",
-    "import time\n",
-    "\n",
-    "# 页面基础配置\n",
-    "st.set_page_config(\n",
-    "    page_title=\"母亲节快乐贺卡\",\n",
-    "    page_icon=\"💐\",\n",
-    "    layout=\"centered\"\n",
-    ")\n",
-    "\n",
-    "# 粉色渐变背景 + 动态飘落特效 CSS\n",
-    "page_bg = \"\"\"\n",
-    "<style>\n",
-    "    [data-testid=\"stAppViewContainer\"] {\n",
-    "        background: linear-gradient(135deg, #ffd6e0, #ffb6c1, #ffe4ec);\n",
-    "        background-size: 400% 400%;\n",
-    "        animation: gradientBg 12s ease infinite;\n",
-    "    }\n",
-    "\n",
-    "    @keyframes gradientBg {\n",
-    "        0%{background-position:0% 50%}\n",
-    "        50%{background-position:100% 50%}\n",
-    "        100%{background-position:0% 50%}\n",
-    "    }\n",
-    "\n",
-    "    /* 贺卡卡片样式 */\n",
-    "    .card-box {\n",
-    "        background: rgba(255,255,255,0.85);\n",
-    "        border-radius: 25px;\n",
-    "        padding: 40px 30px;\n",
-    "        margin-top: 30px;\n",
-    "        box-shadow: 0 8px 30px rgba(255,105,180,0.3);\n",
-    "        text-align: center;\n",
-    "    }\n",
-    "\n",
-    "    /* 飘落爱心花朵 */\n",
-    "    .fall-item {\n",
-    "        position: fixed;\n",
-    "        top: -50px;\n",
-    "        font-size: 25px;\n",
-    "        animation: fall 10s linear infinite;\n",
-    "        z-index: 9999;\n",
-    "    }\n",
-    "\n",
-    "    @keyframes fall {\n",
-    "        0% {transform: translateY(0) rotate(0deg); opacity:1;}\n",
-    "        100% {transform: translateY(100vh) rotate(360deg); opacity:0;}\n",
-    "    }\n",
-    "</style>\n",
-    "\"\"\"\n",
-    "st.markdown(page_bg, unsafe_allow_html=True)\n",
-    "\n",
-    "# 动态飘落元素\n",
-    "fall_emojis = [\"💐\",\"🌸\",\"💖\",\"💕\",\"🌹\",\"✨\",\"🌷\",\"💝\"]\n",
-    "fall_html = \"\"\n",
-    "for i in range(20):\n",
-    "    delay = i * 0.5\n",
-    "    left = i * 5\n",
-    "    fall_html += f'<div class=\"fall-item\" style=\"left:{left}%;animation-delay:{delay}s;\">{fall_emojis[i%len(fall_emojis)]}</div>'\n",
-    "st.markdown(fall_html, unsafe_allow_html=True)\n",
-    "\n",
-    "# 贺卡主体内容\n",
-    "st.markdown(\"\"\"\n",
-    "<div class=\"card-box\">\n",
-    "    <h1 style=\"color:#d63384; font-family:SimHei;\">💐 母亲节快乐 💐</h1>\n",
-    "    <br>\n",
-    "    <h3 style=\"color:#c2185b;\">致最美的妈妈</h3>\n",
-    "    <p style=\"font-size:18px; color:#666; line-height:1.8;\">\n",
-    "    您辛苦了一辈子<br>\n",
-    "    温柔了岁月，温暖了时光<br>\n",
-    "    愿往后余生<br>\n",
-    "    平安喜乐，永远安康<br>\n",
-    "    永远做最幸福的自己 ❤️\n",
-    "    </p>\n",
-    "    <br>\n",
-    "    <p style=\"font-size:20px; color:#d63384; font-weight:bold;\">爱你的孩子</p>\n",
-    "</div>\n",
-    "\"\"\", unsafe_allow_html=True)\n",
-    "\n",
-    "# 缓慢文字加载动画\n",
-    "with st.empty():\n",
-    "    for text in [\"💖 愿天下所有妈妈 节日快乐 💖\",\"💐 被温柔以待，被岁月偏爱 💐\"]:\n",
-    "        st.markdown(f\"<h3 style='text-align:center;color:#c2185b;'>{text}</h3>\", unsafe_allow_html=True)\n",
-    "        time.sleep(1.2)"
-   ]
-  },
-  {
-   "cell_type": "code",
-   "execution_count": null,
-   "id": "7f438a9b-481e-4e75-bb51-21f4a82eb04e",
-   "metadata": {},
-   "outputs": [],
-   "source": []
-  }
- ],
- "metadata": {
-  "kernelspec": {
-   "display_name": "Python [conda env:base] *",
-   "language": "python",
-   "name": "conda-base-py"
-  },
-  "language_info": {
-   "codemirror_mode": {
-    "name": "ipython",
-    "version": 3
-   },
-   "file_extension": ".py",
-   "mimetype": "text/x-python",
-   "name": "python",
-   "nbconvert_exporter": "python",
-   "pygments_lexer": "ipython3",
-   "version": "3.13.9"
-  }
- },
- "nbformat": 4,
- "nbformat_minor": 5
-}
+
+    @keyframes gradientBg {
+        0% { background-position: 0% 50%; }
+        50% { background-position: 100% 50%; }
+        100% { background-position: 0% 50%; }
+    }
+
+    .card-box {
+        background: rgba(255, 255, 255, 0.85);
+        border-radius: 25px;
+        padding: 40px 30px;
+        margin-top: 30px;
+        box-shadow: 0 8px 30px rgba(255, 105, 180, 0.3);
+        text-align: center;
+    }
+
+    .fall-item {
+        position: fixed;
+        top: -50px;
+        font-size: 25px;
+        animation: fall 10s linear infinite;
+        z-index: 9999;
+    }
+
+    @keyframes fall {
+        0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+        100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+    }
+</style>
+"""
+st.markdown(page_style, unsafe_allow_html=True)
+
+# -------------------------- 动态飘落花朵/爱心 --------------------------
+fall_emojis = ["💐", "🌸", "💖", "💕", "🌹", "✨", "🌷", "💝"]
+fall_html = ""
+for i in range(20):
+    delay = i * 0.5
+    left = i * 5
+    fall_html += f'<div class="fall-item" style="left:{left}%;animation-delay:{delay}s;">{fall_emojis[i % len(fall_emojis)]}</div>'
+st.markdown(fall_html, unsafe_allow_html=True)
+
+# -------------------------- 贺卡主体内容 --------------------------
+st.markdown("""
+<div class="card-box">
+    <h1 style="color:#d63384; font-family:SimHei;">💐 母亲节快乐 💐</h1>
+    <br>
+    <h3 style="color:#c2185b;">致最美的妈妈</h3>
+    <p style="font-size:18px; color:#666; line-height:1.8;">
+    您辛苦了一辈子<br>
+    温柔了岁月，温暖了时光<br>
+    愿往后余生<br>
+    平安喜乐，永远安康<br>
+    永远做最幸福的自己 ❤️
+    </p>
+    <br>
+    <p style="font-size:20px; color:#d63384; font-weight:bold;">爱你的孩子</p>
+</div>
+""", unsafe_allow_html=True)
+
+# -------------------------- 缓慢文字加载动画 --------------------------
+with st.empty():
+    for text in ["💖 愿天下所有妈妈 节日快乐 💖", "💐 被温柔以待，被岁月偏爱 💐"]:
+        st.markdown(f"<h3 style='text-align:center;color:#c2185b;'>{text}</h3>", unsafe_allow_html=True)
+        time.sleep(1.2)
