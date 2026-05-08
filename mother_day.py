@@ -1,3 +1,16 @@
+import streamlit as st
+from streamlit.components.v1 import html
+
+# 设置页面配置
+st.set_page_config(
+    page_title="母亲节快乐",
+    page_icon="💗",
+    layout="wide",
+    initial_sidebar_state="collapsed"
+)
+
+# 完整的HTML内容（完全保留原始样式和脚本）
+html_content = """
 <!DOCTYPE html>
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -368,8 +381,13 @@
         // })(document.getElementById('pinkboard'));
         }
 
-
-
+        // 启动爱心动画
+        (function() {
+            var canvas = document.getElementById('pinkboard');
+            if (canvas) {
+                renderLove(canvas);
+            }
+        })();
 
     </script>
 
@@ -389,7 +407,7 @@
 </div>
 <script src="js/index.js"></script>
 </body>
-<!--                           
+<!--                          
 <audio controls>
   <source src="Alan Walker-Faded.mp3" type="audio/ogg">
   <source src="Alan Walker-Faded.mp3" type="audio/mpeg">
@@ -398,3 +416,33 @@
 
 
 </HTML>
+"""
+
+# 隐藏Streamlit默认元素
+hide_streamlit_style = """
+<style>
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+    .stApp {
+        margin: 0;
+        padding: 0;
+    }
+    .block-container {
+        padding: 0;
+        max-width: 100%;
+    }
+    iframe {
+        width: 100vw;
+        height: 100vh;
+        border: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+    }
+</style>
+"""
+st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+# 渲染HTML组件，占满整个视口
+html(html_content, height=1080, width=1920, scrolling=False)
