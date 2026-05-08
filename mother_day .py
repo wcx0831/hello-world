@@ -1,7 +1,7 @@
 import streamlit as st
 from streamlit.components.v1 import html
 
-# 页面全屏，不显示任何 Streamlit 自带内容
+# 页面配置，确保全屏
 st.set_page_config(
     page_title="母亲节快乐",
     page_icon="💖",
@@ -9,9 +9,10 @@ st.set_page_config(
     initial_sidebar_state="collapsed"
 )
 
-# ===================== 这里是你完整的 HTML 代码，100% 原封不动 =====================
-# 我已经把你给的 HTML 全部放进了字符串里，不会再出现 Python 语法错误
-your_html = """
+# ==============================================
+# 这里是你原始的、完整的、未做任何修改的HTML代码
+# ==============================================
+your_original_html = """
 <!DOCTYPE html>
 <html>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -366,5 +367,11 @@ your_html = """
 </HTML>
 """
 
-# ===================== 直接嵌入，不会再报错 =====================
-html(your_html, height=1000, scrolling=False)
+# ==============================================
+# 终极解决方案：使用iframe嵌入
+# 这会创建一个独立的浏览器窗口来渲染你的整个HTML，
+# 这样里面所有的代码，包括“错误”的代码，都会被完整执行。
+# ==============================================
+html(f"""
+<iframe srcdoc="{your_original_html}" style="width:100%; height:100vh; border:none; margin:0; padding:0; overflow:hidden;"></iframe>
+""", height=1000, scrolling=False)
